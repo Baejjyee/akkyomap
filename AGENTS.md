@@ -261,8 +261,19 @@ com.akkyomap.backend.AkkyomapApplication
 
 ```bash
 cd backend
-./gradlew bootRun
+DB_USERNAME=akkyomap DB_PASSWORD='로컬_DB_비밀번호' ./gradlew bootRun
 ```
+
+`local` profile은 MySQL을 기본 datasource로 사용합니다. 기본 DB 이름은 `akkyomap`이며, MySQL Driver 의존성이 추가되어 있습니다. 실제 DB 비밀번호는 Git에 커밋하지 않고 `DB_USERNAME`, `DB_PASSWORD` 환경변수로 전달합니다. Workbench에서 `place` 테이블 저장 확인까지 완료했습니다.
+
+테스트 실행:
+
+```bash
+cd backend
+./gradlew test
+```
+
+`test` profile은 H2를 사용하므로 MySQL 서버 없이 테스트할 수 있습니다.
 
 프론트엔드 실행:
 
@@ -299,7 +310,6 @@ OpenAPI JSON: http://localhost:8080/v3/api-docs
 - 관리자 승인/반려 프론트 화면
 - 신고 기능
 - 리뷰 기능
-- MySQL 로컬 연결
 - README 정리
 
 ### 2순위
@@ -323,6 +333,7 @@ OpenAPI JSON: http://localhost:8080/v3/api-docs
 - MCP 기반 AI 장소 검색 도구
 - 승인 대기 장소 요약
 - 신고 많은 장소 요약
+- Docker, CI/CD, 배포 DB 설정
 
 ## Core Domain
 
