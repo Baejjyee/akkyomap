@@ -38,3 +38,49 @@ DB_PASSWORD=local_password \
 cd backend
 ./gradlew test
 ```
+
+## Backend Observability
+
+테스트와 JaCoCo 커버리지 리포트를 생성합니다.
+
+```bash
+cd backend
+./gradlew test
+```
+
+명시적으로 커버리지 리포트를 생성하려면 다음 명령을 사용할 수 있습니다.
+
+```bash
+cd backend
+./gradlew test jacocoTestReport
+```
+
+커버리지 HTML 리포트 위치:
+
+```text
+backend/build/reports/jacoco/test/html/index.html
+```
+
+백엔드를 로컬에서 실행한 뒤 Actuator 엔드포인트를 확인합니다.
+
+```text
+http://localhost:8080/actuator/health
+http://localhost:8080/actuator/metrics
+http://localhost:8080/actuator/prometheus
+```
+
+Prometheus와 Grafana는 모니터링 도구만 Docker Compose로 실행합니다. Spring Boot 앱과 MySQL은 Docker Compose에 포함하지 않고 기존처럼 로컬에서 실행합니다.
+
+```bash
+docker compose -f docker-compose.monitoring.yml up
+```
+
+접속 URL:
+
+```text
+Prometheus: http://localhost:9090
+Prometheus Targets: http://localhost:9090/targets
+Grafana: http://localhost:3000
+```
+
+Grafana 기본 로그인은 `admin` / `admin`입니다. Prometheus datasource는 provisioning으로 자동 등록됩니다.
