@@ -552,36 +552,36 @@ Controller 테스트는 Service 테스트 이후 추가합니다.
 
 아래 순서대로 작게 구현합니다.
 
-- [ ] `backend/` Spring Boot 프로젝트 생성
-- [ ] 기본 의존성 설정
-- [ ] H2 기반 로컬 설정 추가
-- [ ] `PlaceStatus` enum 생성
-- [ ] `PlaceCategory` enum 생성
-- [ ] `Place` Entity 생성
-- [ ] Place 상태 변경 메서드 `approve()`, `reject()` 추가
-- [ ] `PlaceCreateRequest` 생성
-- [ ] `PlaceResponse` 생성
-- [ ] `PlaceDetailResponse` 생성
-- [ ] `PlaceMapResponse` 생성
-- [ ] `PlaceStatusResponse` 생성
-- [ ] `PlaceRepository` 생성
-- [ ] `BusinessException`, `ErrorCode`, `GlobalExceptionHandler` 생성
-- [ ] 실패 응답 형식 정의
-- [ ] `PlaceService.createPlace()` 구현
-- [ ] `PlaceService.getApprovedPlaces()` 구현
-- [ ] `PlaceService.getApprovedPlace()` 구현
-- [ ] `PlaceService.getApprovedPlacesInBounds()` 구현
-- [ ] `PlaceService.getPendingPlaces()` 구현
-- [ ] `PlaceService.approvePlace()` 구현
-- [ ] `PlaceService.rejectPlace()` 구현
-- [ ] `PlaceController` 생성
-- [ ] `AdminPlaceController` 생성
-- [ ] 지도 범위 검증 구현
-- [ ] Entity 테스트 작성
-- [ ] Service 테스트 작성
+- [x] `backend/` Spring Boot 프로젝트 생성
+- [x] 기본 의존성 설정
+- [x] H2 기반 로컬 설정 추가
+- [x] `PlaceStatus` enum 생성
+- [x] `PlaceCategory` enum 생성
+- [x] `Place` Entity 생성
+- [x] Place 상태 변경 메서드 `approve()`, `reject()` 추가
+- [x] `PlaceCreateRequest` 생성
+- [x] `PlaceResponse` 생성
+- [x] `PlaceDetailResponse` 생성
+- [x] `PlaceMapResponse` 생성
+- [x] `PlaceStatusResponse` 생성
+- [x] `PlaceRepository` 생성
+- [x] `BusinessException`, `ErrorCode`, `GlobalExceptionHandler` 생성
+- [x] 실패 응답 형식 정의
+- [x] `PlaceService.createPlace()` 구현
+- [x] `PlaceService.getApprovedPlaces()` 구현
+- [x] `PlaceService.getApprovedPlace()` 구현
+- [x] `PlaceService.getApprovedPlacesInBounds()` 구현
+- [x] `PlaceService.getPendingPlaces()` 구현
+- [x] `PlaceService.approvePlace()` 구현
+- [x] `PlaceService.rejectPlace()` 구현
+- [x] `PlaceController` 생성
+- [x] `AdminPlaceController` 생성
+- [x] 지도 범위 검증 구현
+- [x] Entity 테스트 작성
+- [x] Service 테스트 작성
 - [ ] 필요 시 Controller 테스트 작성
 - [ ] 필요 시 Repository 테스트 작성
-- [ ] 로컬에서 테스트 실행
+- [x] 로컬에서 테스트 실행
 - [ ] API 수동 확인
 - [ ] README 또는 API 문서 갱신 필요 여부 확인
 
