@@ -1,5 +1,35 @@
 # React + TypeScript + Vite
 
+## Auth/JWT 연동
+
+프론트엔드는 Vite proxy를 유지하며 `/api` 상대 경로로 백엔드를 호출합니다.
+
+```bash
+npm run dev
+```
+
+인증 흐름:
+
+- `/signup`에서 회원가입
+- `/login`에서 로그인
+- 로그인 성공 시 `localStorage`의 `akkyomap.accessToken`에 access token 저장
+- Axios interceptor가 `Authorization: Bearer {token}` 헤더를 자동 첨부
+- 앱 시작 시 `/api/auth/me`로 로그인 상태 복원
+- 401 응답 시 저장된 access token 삭제
+
+주요 화면:
+
+```text
+/: 공개 지도
+/login: 로그인
+/signup: 회원가입
+/my/places: 내 장소 목록
+/my/places/:placeId/edit: 내 장소 수정
+/admin/places/pending: 관리자 승인/반려
+```
+
+관리자 화면은 `user.role === 'ADMIN'`인 계정만 접근합니다. 로컬 개발에서는 백엔드 DB의 `users.role`을 `ADMIN`으로 직접 변경해 테스트합니다.
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:

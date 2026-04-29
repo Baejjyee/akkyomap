@@ -50,6 +50,7 @@ button:disabled {
 
 h1,
 h2,
+h3,
 p,
 dl,
 dd {
@@ -59,7 +60,7 @@ dd {
 .app {
   min-height: 100vh;
   display: grid;
-  grid-template-rows: auto auto 1fr;
+  grid-template-rows: auto auto auto 1fr;
 }
 
 .app-header {
@@ -78,6 +79,51 @@ dd {
   font-size: 28px;
   line-height: 1.15;
   font-weight: 700;
+}
+
+.brand-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.app-nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.nav-link,
+.nav-button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  text-decoration: none;
+}
+
+.nav-link {
+  padding: 0 10px;
+  border-radius: 7px;
+  color: var(--primary);
+  font-weight: 800;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  background: var(--surface-strong);
+}
+
+.user-chip {
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 10px;
+  border-radius: 999px;
+  color: var(--primary-strong);
+  background: #e8f3dc;
+  font-size: 14px;
+  font-weight: 800;
 }
 
 .eyebrow {
@@ -127,6 +173,20 @@ dd {
   font-weight: 700;
 }
 
+.danger-button {
+  min-height: 40px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 7px;
+  color: #ffffff;
+  background: var(--danger);
+  font-weight: 800;
+}
+
+.danger-button:hover {
+  background: #8f1c14;
+}
+
 .icon-button {
   width: 36px;
   height: 36px;
@@ -149,6 +209,19 @@ dd {
   color: var(--primary-strong);
   background: #e8f3dc;
   border-bottom: 1px solid #cfe1bd;
+}
+
+.notice-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.map-toolbar {
+  position: absolute;
+  top: 112px;
+  right: 24px;
+  z-index: 9;
 }
 
 .map-shell {
@@ -544,11 +617,169 @@ dd {
   font-size: 14px;
 }
 
+.page-panel {
+  width: min(1040px, calc(100% - 32px));
+  margin: 28px auto;
+}
+
+.page-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.page-heading h2,
+.auth-form h2 {
+  margin-top: 4px;
+  font-size: 26px;
+  line-height: 1.2;
+}
+
+.auth-page {
+  display: flex;
+  justify-content: center;
+}
+
+.auth-form,
+.page-form {
+  width: min(440px, 100%);
+  display: grid;
+  gap: 14px;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: var(--shadow-soft);
+}
+
+.page-form {
+  box-shadow: none;
+}
+
+.auth-form label {
+  display: grid;
+  gap: 7px;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.auth-form input {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  padding: 10px 12px;
+  color: var(--text);
+  background: #ffffff;
+}
+
+.form-help {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.form-help a {
+  color: var(--primary);
+  font-weight: 800;
+}
+
+.page-status,
+.empty-state,
+.inline-notice,
+.inline-error {
+  padding: 14px 16px;
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.inline-notice {
+  margin-bottom: 14px;
+  color: var(--primary-strong);
+  background: #e8f3dc;
+}
+
+.inline-error {
+  margin-bottom: 14px;
+  color: var(--danger);
+  background: #fff4f1;
+}
+
+.place-list {
+  display: grid;
+  gap: 12px;
+}
+
+.list-card {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.list-card h3 {
+  margin-top: 8px;
+  margin-bottom: 6px;
+  font-size: 19px;
+}
+
+.list-card p {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.card-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-actions a {
+  text-decoration: none;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 0 8px;
+  border-radius: 999px;
+  color: var(--primary-strong);
+  background: #e8f3dc;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.status-badge--approved {
+  color: #155e2f;
+  background: #dcfce7;
+}
+
+.status-badge--rejected,
+.status-badge--hidden {
+  color: var(--danger);
+  background: #fff4f1;
+}
+
+.status-badge--pending {
+  color: #92400e;
+  background: #fef3c7;
+}
+
 @media (max-width: 720px) {
   .app-header {
     align-items: flex-start;
     flex-direction: column;
     padding: 16px;
+  }
+
+  .app-nav {
+    justify-content: flex-start;
   }
 
   .app-header h1 {
@@ -559,6 +790,11 @@ dd {
     align-items: flex-start;
     flex-direction: column;
     padding: 12px 16px;
+  }
+
+  .map-toolbar {
+    top: 150px;
+    right: 16px;
   }
 
   .map-shell {
@@ -593,5 +829,19 @@ dd {
 
   .place-form {
     padding: 20px 16px;
+  }
+
+  .page-heading,
+  .list-card {
+    grid-template-columns: 1fr;
+  }
+
+  .page-heading {
+    flex-direction: column;
+  }
+
+  .card-actions {
+    align-items: stretch;
+    flex-direction: column;
   }
 }

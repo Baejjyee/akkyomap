@@ -5,7 +5,12 @@ export type PlaceCategory =
   | 'PRINT_COPY'
   | 'CONVENIENCE'
 
-export type PlaceStatus = 'PENDING' | 'APPROVED' | 'REJECTED' | 'HIDDEN'
+export type PlaceStatus =
+  | 'PENDING'
+  | 'APPROVED'
+  | 'REJECTED'
+  | 'HIDDEN'
+  | 'DELETED'
 
 export interface PlaceCreateRequest {
   name: string
@@ -17,6 +22,8 @@ export interface PlaceCreateRequest {
   description?: string
 }
 
+export type PlaceUpdateRequest = PlaceCreateRequest
+
 export interface PlaceMapResponse {
   id: number
   name: string
@@ -24,6 +31,15 @@ export interface PlaceMapResponse {
   latitude: number
   longitude: number
   priceInfo: string | null
+}
+
+export interface PlaceResponse {
+  id: number
+  name: string
+  category: PlaceCategory
+  address: string
+  priceInfo: string | null
+  status: PlaceStatus
 }
 
 export interface PlaceDetailResponse {
@@ -38,6 +54,22 @@ export interface PlaceDetailResponse {
   status: PlaceStatus
   createdAt: string
   updatedAt: string
+}
+
+export interface MyPlaceResponse {
+  id: number
+  name: string
+  category: PlaceCategory
+  address: string
+  priceInfo: string | null
+  status: PlaceStatus
+  createdAt: string
+  updatedAt: string
+}
+
+export interface PlaceStatusResponse {
+  id: number
+  status: PlaceStatus
 }
 
 export interface MapBounds {
