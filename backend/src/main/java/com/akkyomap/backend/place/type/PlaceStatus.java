@@ -4,5 +4,6 @@ public enum PlaceStatus {
     PENDING,
     APPROVED,
     REJECTED,
-    HIDDEN
+    HIDDEN,
+    DELETED
 }

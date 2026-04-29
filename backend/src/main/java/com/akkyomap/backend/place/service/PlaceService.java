@@ -7,9 +7,13 @@ import com.akkyomap.backend.place.dto.PlaceDetailResponse;
 import com.akkyomap.backend.place.dto.PlaceMapResponse;
 import com.akkyomap.backend.place.dto.PlaceResponse;
 import com.akkyomap.backend.place.dto.PlaceStatusResponse;
+import com.akkyomap.backend.place.dto.MyPlaceResponse;
+import com.akkyomap.backend.place.dto.PlaceUpdateRequest;
 import com.akkyomap.backend.place.entity.Place;
 import com.akkyomap.backend.place.repository.PlaceRepository;
 import com.akkyomap.backend.place.type.PlaceStatus;
+import com.akkyomap.backend.user.entity.User;
+import com.akkyomap.backend.user.repository.UserRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,10 +24,22 @@ import org.springframework.transaction.annotation.Transactional;
 public class PlaceService {
 
     private final PlaceRepository placeRepository;
+    private final UserRepository userRepository;
 
     @Transactional
-    public PlaceDetailResponse createPlace(PlaceCreateRequest request) {
-        Place place = placeRepository.save(request.toEntity());
+    public PlaceDetailResponse createPlace(PlaceCreateRequest request, Long userId) {
+        User user = findUser(userId);
+        Place place = Place.create(
+            request.name(),
+            request.category(),
+            request.address(),
+            request.latitude(),
+            request.longitude(),
+            request.priceInfo(),
+            request.description(),
+            user
+        );
+        placeRepository.save(place);
         return PlaceDetailResponse.from(place);
     }
 
@@ -72,6 +88,39 @@ public class PlaceService {
             .toList();
     }
 
+    @Transactional(readOnly = true)
+    public List<MyPlaceResponse> getMyPlaces(Long userId) {
+        findUser(userId);
+        return placeRepository.findAllByCreatedByIdAndStatusNotOrderByCreatedAtDesc(userId, PlaceStatus.DELETED)
+            .stream()
+            .map(MyPlaceResponse::from)
+            .toList();
+    }
+
+    @Transactional
+    public PlaceDetailResponse updateMyPlace(Long placeId, PlaceUpdateRequest request, Long userId) {
+        Place place = findPlace(placeId);
+        validateOwner(place, userId);
+        place.updateByOwner(
+            request.name(),
+            request.category(),
+            request.address(),
+            request.latitude(),
+            request.longitude(),
+            request.priceInfo(),
+            request.description()
+        );
+        return PlaceDetailResponse.from(place);
+    }
+
+    @Transactional
+    public PlaceStatusResponse deleteMyPlace(Long placeId, Long userId) {
+        Place place = findPlace(placeId);
+        validateOwner(place, userId);
+        place.deleteByOwner();
+        return PlaceStatusResponse.from(place);
+    }
+
     @Transactional
     public PlaceStatusResponse approvePlace(Long placeId) {
         Place place = findPlace(placeId);
@@ -89,6 +138,20 @@ public class PlaceService {
     private Place findPlace(Long placeId) {
         return placeRepository.findById(placeId)
             .orElseThrow(() -> new BusinessException(ErrorCode.PLACE_NOT_FOUND));
+    }
+
+    private User findUser(Long userId) {
+        return userRepository.findById(userId)
+            .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
+    }
+
+    private void validateOwner(Place place, Long userId) {
+        if (place.getCreatedBy() == null || !place.getCreatedBy().getId().equals(userId)) {
+            throw new BusinessException(ErrorCode.PLACE_ACCESS_DENIED);
+        }
+        if (place.getStatus() == PlaceStatus.DELETED) {
+            throw new BusinessException(ErrorCode.PLACE_NOT_FOUND);
+        }
     }
 
     private void validateMapBounds(Double swLat, Double swLng, Double neLat, Double neLng) {

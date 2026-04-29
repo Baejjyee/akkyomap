@@ -53,6 +53,34 @@ class PlaceTest {
             .isInstanceOf(BusinessException.class);
     }
 
+    @Test
+    void updateByOwnerChangesApprovedPlaceToPending() {
+        Place place = createPlace();
+        place.approve();
+
+        place.updateByOwner(
+            "수정한 식당",
+            PlaceCategory.RESTAURANT,
+            "부산광역시 남구 수정로",
+            35.2,
+            129.1,
+            "라면 4000원",
+            "수정 설명"
+        );
+
+        assertThat(place.getName()).isEqualTo("수정한 식당");
+        assertThat(place.getStatus()).isEqualTo(PlaceStatus.PENDING);
+    }
+
+    @Test
+    void deleteByOwnerChangesStatusToDeleted() {
+        Place place = createPlace();
+
+        place.deleteByOwner();
+
+        assertThat(place.getStatus()).isEqualTo(PlaceStatus.DELETED);
+    }
+
     private Place createPlace() {
         return Place.create(
             "학생식당",

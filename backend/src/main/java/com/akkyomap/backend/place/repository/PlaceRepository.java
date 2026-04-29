@@ -9,6 +9,8 @@ public interface PlaceRepository extends JpaRepository<Place, Long> {
 
     List<Place> findAllByStatus(PlaceStatus status);
 
+    List<Place> findAllByCreatedByIdAndStatusNotOrderByCreatedAtDesc(Long createdById, PlaceStatus status);
+
     List<Place> findAllByStatusAndLatitudeBetweenAndLongitudeBetween(
         PlaceStatus status,
         Double swLat,

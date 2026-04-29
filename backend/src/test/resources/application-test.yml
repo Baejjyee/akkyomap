@@ -18,3 +18,7 @@ spring:
 logging:
   level:
     org.hibernate.SQL: debug
+
+jwt:
+  secret: test-jwt-secret-for-akkyomap-local-tests-1234567890
+  access-token-expiration: 3600000

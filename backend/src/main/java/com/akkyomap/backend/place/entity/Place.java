@@ -4,13 +4,17 @@ import com.akkyomap.backend.global.exception.BusinessException;
 import com.akkyomap.backend.global.exception.ErrorCode;
 import com.akkyomap.backend.place.type.PlaceCategory;
 import com.akkyomap.backend.place.type.PlaceStatus;
+import com.akkyomap.backend.user.entity.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import java.time.LocalDateTime;
@@ -49,6 +53,10 @@ public class Place {
     @Column(length = 1000)
     private String description;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "created_by_user_id", nullable = true)
+    private User createdBy;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)
     private PlaceStatus status;
@@ -60,6 +68,62 @@ public class Place {
     private LocalDateTime updatedAt;
 
     private Place(
+        String name,
+        PlaceCategory category,
+        String address,
+        Double latitude,
+        Double longitude,
+        String priceInfo,
+        String description,
+        User createdBy
+    ) {
+        this.name = name;
+        this.category = category;
+        this.address = address;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.priceInfo = priceInfo;
+        this.description = description;
+        this.createdBy = createdBy;
+        this.status = PlaceStatus.PENDING;
+    }
+
+    public static Place create(
+        String name,
+        PlaceCategory category,
+        String address,
+        Double latitude,
+        Double longitude,
+        String priceInfo,
+        String description
+    ) {
+        return new Place(name, category, address, latitude, longitude, priceInfo, description, null);
+    }
+
+    public static Place create(
+        String name,
+        PlaceCategory category,
+        String address,
+        Double latitude,
+        Double longitude,
+        String priceInfo,
+        String description,
+        User createdBy
+    ) {
+        return new Place(name, category, address, latitude, longitude, priceInfo, description, createdBy);
+    }
+
+    public void approve() {
+        validatePendingStatus();
+        this.status = PlaceStatus.APPROVED;
+    }
+
+    public void reject() {
+        validatePendingStatus();
+        this.status = PlaceStatus.REJECTED;
+    }
+
+    public void updateByOwner(
         String name,
         PlaceCategory category,
         String address,
@@ -78,26 +142,8 @@ public class Place {
         this.status = PlaceStatus.PENDING;
     }
 
-    public static Place create(
-        String name,
-        PlaceCategory category,
-        String address,
-        Double latitude,
-        Double longitude,
-        String priceInfo,
-        String description
-    ) {
-        return new Place(name, category, address, latitude, longitude, priceInfo, description);
-    }
-
-    public void approve() {
-        validatePendingStatus();
-        this.status = PlaceStatus.APPROVED;
-    }
-
-    public void reject() {
-        validatePendingStatus();
-        this.status = PlaceStatus.REJECTED;
+    public void deleteByOwner() {
+        this.status = PlaceStatus.DELETED;
     }
 
     private void validatePendingStatus() {
