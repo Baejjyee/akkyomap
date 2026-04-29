@@ -257,37 +257,31 @@ com.akkyomap.backend.AkkyomapApplication
 
 ## Current Local Run
 
-백엔드 실행:
+자동 실행:
+
+```bash
+chmod +x scripts/dev-start.sh scripts/dev-stop.sh
+./scripts/dev-start.sh
+```
+
+`scripts/dev-start.sh`는 MySQL Homebrew service, Docker Desktop, Prometheus/Grafana, backend, frontend를 순서대로 실행합니다. DB 접속 정보는 루트 `.env.local`에서 읽고, `.env.local`은 Git에 커밋하지 않으며 `.env.local.example`만 커밋합니다. 로그는 `logs/`, PID는 `.pids/`에 저장합니다.
+
+자동 종료:
+
+```bash
+./scripts/dev-stop.sh
+```
+
+`scripts/dev-stop.sh`는 backend, frontend, Prometheus/Grafana를 종료합니다. MySQL은 종료하지 않습니다.
+
+수동 백엔드 실행:
 
 ```bash
 cd backend
 DB_USERNAME=akkyomap DB_PASSWORD='로컬_DB_비밀번호' ./gradlew bootRun
 ```
 
-`local` profile은 MySQL을 기본 datasource로 사용합니다. 기본 DB 이름은 `akkyomap`이며, MySQL Driver 의존성이 추가되어 있습니다. 실제 DB 비밀번호는 Git에 커밋하지 않고 `DB_USERNAME`, `DB_PASSWORD` 환경변수로 전달합니다. Workbench에서 `place` 테이블 저장 확인까지 완료했습니다.
-
-테스트 실행:
-
-```bash
-cd backend
-./gradlew test
-```
-
-`test` profile은 H2를 사용하므로 MySQL 서버 없이 테스트할 수 있습니다.
-
-프론트엔드 실행:
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-프론트엔드 환경변수:
-
-```text
-VITE_KAKAO_MAP_APP_KEY=카카오_Developers_JavaScript_키
-```
+`local` profile은 MySQL을 기본 datasource로 사용합니다. 기본 DB 이름은 `akkyomap`이며, MySQL Driver 의존성이 추가되어 있습니다. `test` profile은 H2를 사용하므로 MySQL 서버 없이 `./gradlew test`를 실행할 수 있습니다.
 
 접속 URL:
 

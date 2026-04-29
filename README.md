@@ -1,5 +1,76 @@
 # akkyomap
 
+## Local Dev Automation
+
+노트북을 껐다 켠 뒤에도 한 번에 로컬 개발 환경을 실행할 수 있도록 스크립트를 제공합니다.
+
+전제 조건:
+
+- macOS
+- MySQL은 Homebrew service 기준
+- Docker Desktop 설치 및 실행 가능
+- Spring Boot 앱과 MySQL은 Docker Compose에 포함하지 않음
+- Prometheus/Grafana만 Docker Compose로 실행
+
+먼저 루트에 `.env.local`을 만듭니다. 실제 비밀번호는 Git에 커밋하지 않습니다.
+
+```bash
+cp .env.local.example .env.local
+```
+
+`.env.local` 예시:
+
+```text
+DB_USERNAME=akkyomap
+DB_PASSWORD=your_local_db_password
+```
+
+최초 1회 실행 권한을 부여합니다.
+
+```bash
+chmod +x scripts/dev-start.sh scripts/dev-stop.sh
+```
+
+로컬 개발 환경 실행:
+
+```bash
+./scripts/dev-start.sh
+```
+
+실행되는 작업:
+
+- `brew services start mysql`
+- Docker Desktop 실행 여부 확인 및 필요 시 `open -a Docker`
+- Docker 준비 대기
+- `docker compose -f docker-compose.monitoring.yml up -d`
+- backend 백그라운드 실행 및 `logs/backend.log` 저장
+- frontend 백그라운드 실행 및 `logs/frontend.log` 저장
+- pid 파일을 `.pids/`에 저장
+
+접속 URL:
+
+```text
+Frontend: http://localhost:5173
+Backend Swagger: http://localhost:8080/swagger-ui/index.html
+Actuator: http://localhost:8080/actuator/health
+Prometheus: http://localhost:9090
+Grafana: http://localhost:3000
+```
+
+종료:
+
+```bash
+./scripts/dev-stop.sh
+```
+
+종료되는 대상:
+
+- `.pids/backend.pid`의 backend 프로세스
+- `.pids/frontend.pid`의 frontend 프로세스
+- Prometheus/Grafana Docker Compose
+
+MySQL Homebrew service는 기본적으로 종료하지 않습니다.
+
 ## Backend Local MySQL
 
 로컬 실행 기본 datasource는 MySQL `akkyomap` 데이터베이스입니다.
